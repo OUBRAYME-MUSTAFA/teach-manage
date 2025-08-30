@@ -27,7 +27,13 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+               "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -37,18 +43,19 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
+             "budgets": [
+                        {
+                          "type": "initial",
+                          "maximumWarning": "2MB",
+                          "maximumError": "3MB"
+                        },
+                        {
+                          "type": "anyComponentStyle",
+                          "maximumWarning": "4kB",
+                          "maximumError": "8kB"
+                        }
+                      ]
+,
               "outputHashing": "all"
             },
             "development": {
@@ -92,5 +99,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "4e224438-d7c8-4300-b28a-1620b00e9d2e"
   }
 }

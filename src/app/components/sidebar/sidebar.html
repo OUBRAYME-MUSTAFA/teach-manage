@@ -1,0 +1,46 @@
+
+<div class="d-flex flex-column bg-primary text-white position-fixed top-0 start-0" style="width: 250px; height: 100vh; overflow-y: auto;">
+  <div class="p-3">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <span class="fs-4">Admin Panel</span>
+    </a>
+    <ul class="nav nav-pills flex-column mb-auto">
+  <li class="nav-item">
+    <a [routerLink]="'/dashboard'"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="nav-link text-white">
+      <i class="fas fa-chart-line me-2"></i> Dashboard
+    </a>
+  </li>
+  <li class="nav-item">
+    <a [routerLink]="'/statistics'"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="nav-link text-white">
+      <i class="fas fa-chart-bar me-2"></i> الإحصائيات
+    </a>
+  </li>
+</ul>
+
+    <hr>
+
+    <!-- <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a [routerLink]="'/dashboard'" class="nav-link text-white active">
+          <i class="fas fa-chart-line me-2"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="'/statistics'" routerLinkActive="active" class="nav-link text-white">
+          <i class="fas fa-chart-bar me-2"></i> الإحصائيات
+        </a>
+      </li>
+     
+    </ul> -->
+    <hr>
+    <div class="text-center">
+      <button class="btn btn-outline-light btn-sm w-100" (click)="toggleDarkMode()">Toggle Dark Mode</button>
+    </div>
+  </div>
+</div>

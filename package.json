@@ -29,13 +29,21 @@
     "@angular/platform-server": "^20.1.0",
     "@angular/router": "^20.1.0",
     "@angular/ssr": "^20.1.1",
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@syncfusion/ej2-angular-lists": "^30.2.4",
+    "@syncfusion/ej2-angular-navigations": "^30.2.4",
+    "bootstrap": "^5.3.7",
+    "chart.js": "^4.5.0",
     "express": "^5.1.0",
+    "fortawesome": "^0.0.1-security",
+    "ng2-charts": "^4.1.1",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@angular/build": "^20.1.1",
-    "@angular/cli": "^20.1.1",
+    "@angular/cli": "^18.0.7",
     "@angular/compiler-cli": "^20.1.0",
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",

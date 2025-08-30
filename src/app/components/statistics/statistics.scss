@@ -1,0 +1,97 @@
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 15px;
+}
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.checkbox-item {
+  padding: 10px;
+  border: 2px dotted #007bff; // blue dotted border
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  input {
+    margin-left: 8px;
+    accent-color: #007bff; // modern checkbox color
+  }
+
+  &:hover {
+    background-color: #e8f4ff;
+    transform: scale(1.02);
+  }
+}
+
+//-----------------------------------------------------------
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  font-size: 16px;
+  text-align: center;
+  background-color: #fff;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  th, td {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 15px;
+  }
+
+  th {
+    background: linear-gradient(to bottom, #b3e5fc, #81ecfa);
+    color: #003366;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  tr:nth-child(even) {
+    background: linear-gradient(to bottom, #e1f5fe, #b3e5fc);
+  }
+
+  tr:nth-child(odd) {
+    background: linear-gradient(to bottom, #ffffff, #e1f5fe);
+  }
+
+  tr:hover {
+    background: linear-gradient(to bottom, #bbdefb, #90caf9);
+    transition: background 0.3s ease;
+  }
+}
+//==================================================
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #e6f0ff, #ffffff);
+
+  th, td {
+    border: 1px solid #007BFF;
+    padding: 8px;
+  }
+
+  thead {
+    background: linear-gradient(to bottom, #007BFF, #0056b3);
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background: rgba(0, 123, 255, 0.05);
+  }
+
+  tr:hover {
+    background: rgba(0, 123, 255, 0.15);
+  }
+}

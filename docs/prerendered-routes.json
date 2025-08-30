@@ -1,0 +1,7 @@
+{
+  "routes": {
+    "/teach-manage": {},
+    "/teach-manage/dashboard": {},
+    "/teach-manage/statistics": {}
+  }
+}

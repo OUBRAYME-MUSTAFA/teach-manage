@@ -1,0 +1,186 @@
+<div dir="rtl">
+     <!-- ✅ Shared Metadata Block (excluding class name) -->
+<div *ngIf="excelFiles.length; else showDashboard" > 0">
+        <div class="card mb-3">
+  <div class="card-header bg-info text-white">📋 معلومات الملف</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4 mb-2"><strong>🧑‍🏫 الأستاذ:</strong> {{ excelFiles[0]?.metadata?.teacher }} </div>
+      <div class="col-md-4 mb-2"><strong>📘 المادة:</strong> {{ excelFiles[0]?.metadata?.subject }} </div>
+      <div class="col-md-4 mb-2"><strong>🏫 المؤسسة:</strong> {{ excelFiles[0]?.metadata?.school }} </div>
+
+      <!-- Uncomment if needed -->
+      <!-- <div class="col-md-4 mb-2"><strong>🎓 المستوى:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.level }} </div> -->
+
+      <div class="col-md-4 mb-2"><strong>🏢 الأكاديمية:</strong> {{ excelFiles[0]?.metadata?.academy }} </div>
+      <div class="col-md-4 mb-2"><strong>📍 م.الإقليمية:</strong> {{ excelFiles[0]?.metadata?.region }} </div>
+      <div class="col-md-4 mb-2"><strong>📅 الدورة:</strong> {{ excelFiles[0]?.metadata?.semester }} </div>
+      <div class="col-md-4 mb-2"><strong>🗓️ السنة الدراسية:</strong> {{ excelFiles[0]?.metadata?.year }} </div>
+    </div>
+  </div>
+</div>
+
+
+        <!-- Centered Header -->
+         <h4 class="mt-4 text-center">جدول ملخص لجميع الأقسام:</h4>
+  <div class="checkbox-grid">
+      <div class="mb-3"  *ngIf="availableClasses.length > 0">
+        
+        <label><strong>اختر الأقسام &nbsp; &nbsp;:</strong></label>
+            <div class="checkbox-grid">
+              <div *ngFor="let cls of uniqueClasses">
+              <input type="checkbox" [(ngModel)]="selectedClasses[cls]" 
+              (ngModelChange)="updateChart()"  /> {{ cls }}
+            </div>
+          </div>
+        </div>
+      
+      <div class="mb-3">
+        <label><strong>اختر الفروض&nbsp; &nbsp;:</strong></label>
+        <div class="checkbox-grid">
+              <div *ngFor="let col of availableStatsColumns">
+                <input type="checkbox" [(ngModel)]="selectedStats[col]" 
+                (ngModelChange)="updateChart()" /> {{ col }}
+              </div>
+        </div>
+      </div>
+  </div>
+
+  
+
+<div class="table-wrapper overflow-auto" >
+  <table border="1" class="table table-striped text-center">
+  <thead>
+    <tr>
+      <th rowspan="2">القسم</th>
+      <th *ngFor="let col of getSelectedColumns()" colspan="2">{{ col }}</th>
+    </tr>
+    <tr>
+      <ng-container *ngFor="let col of getSelectedColumns()">
+        <th>أعلى</th>
+        <th>أدنى</th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let file of getFilteredExcelFiles()"> 
+      <td>{{ file.className || 'بدون قسم' }}</td>
+      <ng-container *ngFor="let col of getSelectedColumns()">
+        <td>{{ getMax(file.data, col) }}</td>
+        <td>{{ getMin(file.data, col) }}</td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+
+
+//--------------------------------------------------------------------
+
+<table border="1" class="table table-striped text-center">
+  <thead>
+    <tr>
+      <th rowspan="2">القسم</th>
+      <th *ngFor="let col of getSelectedColumns()" [attr.colspan]="scoreIntervals.length">
+        {{ col }}
+      </th>
+    </tr>
+    <tr>
+      <ng-container *ngFor="let col of getSelectedColumns()">
+        <th *ngFor="let interval of scoreIntervals">{{ interval.label }}</th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let file of getFilteredExcelFiles()">
+      <td>{{ file.className || 'بدون قسم' }}</td>
+      <ng-container *ngFor="let col of getSelectedColumns()">
+        <td *ngFor="let interval of scoreIntervals">
+ {{ getStudentCountForInterval(file.data, col, interval) }}
+</td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+//================================
+<table border="1" class="table table-striped text-center">
+  <thead>
+    <tr>
+      <th>القسم</th>
+      <th *ngFor="let col of getSelectedColumns()">{{ col }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let file of getFilteredExcelFiles()">
+       <td>{{ file.className || 'بدون قسم' }}</td>
+      <td *ngFor="let col of getSelectedColumns()">
+        {{ getPercentageAboveOrEqualTen( file.className, col,file.data) }} 
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+//------------------------------------------- charts
+<!-- Class filters -->
+
+<h4 class="mt-4 text-center">📊 Chart: نسبة التلاميذ الحاصلون على المعدل >= 10</h4>
+<div style="display: block; width: 100%; overflow-x: auto;">
+  <canvas baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [type]="barChartType">
+  </canvas>
+</div>
+
+
+<!-- 
+<table border="1" class="table table-striped text-center">
+  <thead>
+    <tr>
+      <th>القسم</th>
+      <th>الفترة</th>
+      <th *ngFor="let col of getSelectedColumns()">{{ col }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let file of getFilteredExcelFiles()">
+      <tr *ngFor="let interval of scoreIntervals; let i = index">
+        <td *ngIf="i === 0" [attr.rowspan]="scoreIntervals.length">
+          {{ file.className || 'بدون قسم' }}
+        </td>
+        <td>{{ interval.label }}</td>
+        <td *ngFor="let col of getSelectedColumns()">
+          {{ getStudentCountForInterval(file.data, col, interval) }}
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table> -->
+
+/-------------------------------------------
+<!-- <div *ngFor="let file of getFilteredExcelFiles()" >
+  <h3>القسم: {{ file.className || 'بدون قسم' }}</h3>
+  <table border="1" class="table table-striped text-center">
+    <thead>
+      <tr>
+        <th>الفترة</th>
+        <th *ngFor="let col of getSelectedColumns()">{{ col }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let interval of scoreIntervals">
+        <td>{{ interval.label }}</td>
+        <td *ngFor="let col of getSelectedColumns()">
+          {{ getStudentCountForInterval(file.data, col, interval) }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+</div>
+</div>
+</div>
+
+<ng-template #showDashboard>
+  <app-dashboard></app-dashboard>
+</ng-template>

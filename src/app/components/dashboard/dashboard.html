@@ -1,0 +1,83 @@
+<div dir="rtl">
+
+  <!-- Show Upload only if no files uploaded yet -->
+  <app-ExcelUploadComponent
+    *ngIf="excelFiles.length === 0"
+    (dataParsed)="handleMultipleFiles($event)">
+  </app-ExcelUploadComponent>
+
+  <!-- Button to add more classes/files, only shown if already have files -->
+  <div *ngIf="excelFiles.length > 0" class="mb-3">
+    <button class="btn btn-success" (click)="showUpload = true">+ إضافة قسم جديد</button>
+  </div>
+
+  <!-- Conditional upload component when adding more files -->
+  <app-ExcelUploadComponent
+    *ngIf="showUpload"
+    (dataParsed)="handleAddMoreFiles($event); showUpload = false">
+  </app-ExcelUploadComponent>
+
+  <p *ngIf="data.length === 0 && excelFiles.length === 0">No data yet. Upload an Excel file above.</p> 
+
+<div *ngIf="excelFiles.length > 0">
+  <!-- ✅ Shared Metadata Block (excluding class name) -->
+<div *ngIf="excelFiles.length > 0">
+  <div class="card mb-3">
+  <div class="card-header bg-info text-white">📋 معلومات الملف</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4 mb-2"><strong>🧑‍🏫 الأستاذ:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.teacher }} </div>
+      <div class="col-md-4 mb-2"><strong>📘 المادة:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.subject }} </div>
+      <div class="col-md-4 mb-2"><strong>🏫 المؤسسة:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.school }} </div>
+      <div class="col-md-4 mb-2"><strong>🎓 المستوى:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.level }} </div>
+      <div class="col-md-4 mb-2"><strong>🏢 الأكاديمية:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.academy }} </div>
+      <div class="col-md-4 mb-2"><strong>📍 م.الإقليمية:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.region }} </div>
+      <div class="col-md-4 mb-2"><strong>📅 الدورة:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.semester }} </div>
+      <div class="col-md-4 mb-2"><strong>🗓️ السنة الدراسية:</strong> {{ excelFiles[selectedClassIndex]?.metadata?.year }} </div>
+      <div class="col-md-4 mb-2"><strong>🗓️  عدد التلاميد:</strong> {{ excelFiles[selectedClassIndex]?.data?.length }} </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+  <!-- Class Switch Buttons -->
+  <div class="mb-3">
+    <button
+      *ngFor="let file of excelFiles; let i = index"
+      (click)="selectedClassIndex = i"
+      [class.active]="selectedClassIndex === i"
+      class="btn btn-outline-primary me-2 mb-2"
+    >
+      {{ file.className || 'بدون قسم' }}
+    </button>
+  </div>
+
+  <!-- Table for selected class -->
+  <div *ngIf="excelFiles[selectedClassIndex]">
+    <h4>📘 القسم: {{ excelFiles[selectedClassIndex].className }}</h4>
+
+    <div class="table-wrapper overflow-auto">
+      <table border="1" class="table table-striped">
+        <thead>
+  <tr>
+    <th *ngFor="let header of getTableHeaders(selectedClassIndex)">
+      {{ header }}
+    </th>
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let student of excelFiles[selectedClassIndex].data">
+    <td *ngFor="let header of getTableHeaders(selectedClassIndex)">
+      {{ student[header] }}
+    </td>
+  </tr>
+</tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
