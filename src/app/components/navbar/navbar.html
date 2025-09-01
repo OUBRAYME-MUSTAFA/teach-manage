@@ -5,13 +5,27 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
+        <ul class="navbar-nav mx-auto">
+          <!-- <li class="nav-item">
             <a class="nav-link" [routerLink]="'/dashboard'">Profile</a>
-          </li>
-          <li class="nav-item">
-            <!-- <button class="btn btn-outline-danger ms-3" (click)="logout()">Logout</button> -->
-          </li>
+
+          </li> -->
+         <li class="nav-item">
+        <a [routerLink]="'/dashboard'" 
+        class="nav-link text-black active"
+        routerLinkActive="active"  
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link text-white">
+          <i class="fas fa-chart-line me-2"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="'/statistics'" 
+            routerLinkActive="active"  
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link text-white" >
+          <i class="fas fa-chart-bar me-2"></i> الإحصائيات
+        </a>
         </ul>
       </div>
     </div>
