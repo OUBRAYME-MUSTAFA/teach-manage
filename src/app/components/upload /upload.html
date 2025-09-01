@@ -13,7 +13,9 @@
     <!-- This is your original file input but hidden -->
     <label class="btn btn-primary mt-2">
       اختر الملفات
-      <input type="file" (change)="handleFileInput($event)" multiple hidden />
+      <input type="file" (change)="handleFileInput($event)" multiple hidden 
+          accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+/>
     </label>
   </div>
 </div>

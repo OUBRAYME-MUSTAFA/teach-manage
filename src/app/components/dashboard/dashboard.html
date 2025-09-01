@@ -17,7 +17,7 @@
     (dataParsed)="handleAddMoreFiles($event); showUpload = false">
   </app-ExcelUploadComponent>
 
-  <p *ngIf="data.length === 0 && excelFiles.length === 0">No data yet. Upload an Excel file above.</p> 
+  <p *ngIf="data.length === 0 && excelFiles.length === 0" class="center-text">No data yet. Upload an Excel file above.</p> 
 
 <div *ngIf="excelFiles.length > 0">
   <!-- ✅ Shared Metadata Block (excluding class name) -->
