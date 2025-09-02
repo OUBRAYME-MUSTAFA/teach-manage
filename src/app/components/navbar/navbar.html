@@ -1,33 +1,41 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" [routerLink]="'/dashboard'">Admin</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse show" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <!-- <li class="nav-item">
-            <a class="nav-link" [routerLink]="'/dashboard'">Profile</a>
+  <div class="container-fluid">
 
-          </li> -->
-         <li class="nav-item">
-        <a [routerLink]="'/dashboard'" 
-        class="nav-link text-black active"
-        routerLinkActive="active"  
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-link text-white">
-          <i class="fas fa-chart-line me-2"></i> Dashboard
-        </a>
-      </li>
-      <li class="nav-item">
-        <a [routerLink]="'/statistics'" 
-            routerLinkActive="active"  
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="nav-link text-white" >
-          <i class="fas fa-chart-bar me-2"></i> الإحصائيات
-        </a>
-        </ul>
-      </div>
+    <!-- Replace text with logo -->
+    <a class="navbar-brand d-flex align-items-center" [routerLink]="'/dashboard'">
+     <!-- <img src="OUBRA.png" alt="Logo" style="height: 70px; width: 190px; object-fit: contain;" /> -->
+      <img src="OUBRA2.png" alt="Logo" class="img-fluid" style="max-height: 70px;" />
+
+      <!-- Optional: keep text next to logo -->
+      <!-- <span>Admin</span> -->
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse show" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        
+        <li class="nav-item">
+          <a [routerLink]="'/statistics'" 
+             routerLinkActive="active"  
+             [routerLinkActiveOptions]="{ exact: true }"
+             class="nav-link text-white">
+            الإحصائيات <i class="fas fa-chart-bar me-2"></i> 
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a [routerLink]="'/dashboard'" 
+             routerLinkActive="active"  
+             [routerLinkActiveOptions]="{ exact: true }"
+             class="nav-link text-white">
+            الصفحة الرئيسية <i class="fas fa-home me-2"></i> 
+          </a>
+        </li>
+      </ul>
     </div>
-  </nav>
-  
+
+  </div>
+</nav>

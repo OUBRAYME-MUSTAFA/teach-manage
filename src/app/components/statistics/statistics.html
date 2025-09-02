@@ -1,6 +1,6 @@
 <div dir="rtl">
      <!-- ✅ Shared Metadata Block (excluding class name) -->
-<div *ngIf="excelFiles.length; else showDashboard" > 0">
+<div *ngIf="excelFiles.length; else showDashboard" > 
         <div class="card mb-3">
   <div class="card-header bg-info text-white">📋 معلومات الملف</div>
   <div class="card-body">
@@ -22,7 +22,7 @@
 
 
         <!-- Centered Header -->
-         <h4 class="mt-4 text-center">جدول ملخص لجميع الأقسام:</h4>
+         <h4 class="text-center fw-bold mt-4">جدول ملخص لجميع الأقسام:</h4>
   <div class="checkbox-grid">
       <div class="mb-3"  *ngIf="availableClasses.length > 0">
         
@@ -49,6 +49,7 @@
   
 
 <div class="table-wrapper overflow-auto" >
+  <h4 class="text-center fw-bold mt-4">📊 أعلى وأدنى النقاط</h4>
   <table border="1" class="table table-striped text-center">
   <thead>
     <tr>
@@ -57,8 +58,8 @@
     </tr>
     <tr>
       <ng-container *ngFor="let col of getSelectedColumns()">
-        <th>أعلى</th>
-        <th>أدنى</th>
+        <th>أعلى نقطة</th>
+        <th>أدنى نقطة</th>
       </ng-container>
     </tr>
   </thead>
@@ -74,8 +75,7 @@
 </table>
 
 
-//--------------------------------------------------------------------
-
+<h4 class="text-center fw-bold mt-4">🧮 توزيع التلاميذ حسب الدرجات</h4>
 <table border="1" class="table table-striped text-center">
   <thead>
     <tr>
@@ -101,7 +101,8 @@
     </tr>
   </tbody>
 </table>
-//================================
+<h4 class="text-center fw-bold mt-4">📈 نسبة التلاميذ الحاصلون على المعدل  </h4>
+
 <table border="1" class="table table-striped text-center">
   <thead>
     <tr>
@@ -120,10 +121,9 @@
 </table>
 
 
-//------------------------------------------- charts
 <!-- Class filters -->
 
-<h4 class="mt-4 text-center">📊 Chart: نسبة التلاميذ الحاصلون على المعدل >= 10</h4>
+<h4 class="text-center fw-bold mt-4">📊 رسم بياني لنسبة التلاميذ الحاصلون على المعدل</h4>
 <div style="display: block; width: 100%; overflow-x: auto;">
   <canvas baseChart
           [data]="barChartData"
@@ -157,7 +157,9 @@
   </tbody>
 </table> -->
 
-/-------------------------------------------
+
+
+<!-- /------------------------------------------- -->
 <!-- <div *ngFor="let file of getFilteredExcelFiles()" >
   <h3>القسم: {{ file.className || 'بدون قسم' }}</h3>
   <table border="1" class="table table-striped text-center">
