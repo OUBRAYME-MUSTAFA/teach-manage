@@ -102,3 +102,21 @@ h4 {
   text-align: center;
   margin-top: 20px;
 }
+@media print {
+  #contentToExport {
+    font-size: 10px;  /* حجم أصغر للنص */
+  }
+
+  #contentToExport table {
+    font-size: 9px;   /* أصغر للجداول */
+  }
+
+  #contentToExport h4 {
+    font-size: 12px;  /* العناوين */
+  }
+
+  #contentToExport canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}

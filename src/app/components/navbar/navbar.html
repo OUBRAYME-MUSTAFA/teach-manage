@@ -1,5 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" dir="rtl">
   <div class="container-fluid">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span> 
+    </button>
 
     <!-- Replace text with logo -->
     <a class="navbar-brand d-flex align-items-center" [routerLink]="'/dashboard'">
@@ -10,30 +14,30 @@
       <!-- <span>Admin</span> -->
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    
 
     <div class="collapse navbar-collapse show" id="navbarNav">
       <ul class="navbar-nav mx-auto">
         
+          <li class="nav-item">
+          <a [routerLink]="'/dashboard'" 
+             routerLinkActive="active"  
+             [routerLinkActiveOptions]="{ exact: true }"
+             class="nav-link text-white">
+             <i class="fas fa-home me-2"></i> الصفحة الرئيسية 
+          </a>
+        </li>
+
         <li class="nav-item">
           <a [routerLink]="'/statistics'" 
              routerLinkActive="active"  
              [routerLinkActiveOptions]="{ exact: true }"
              class="nav-link text-white">
-            الإحصائيات <i class="fas fa-chart-bar me-2"></i> 
+             <i class="fas fa-chart-line me-2"></i> الإحصائيات
           </a>
         </li>
 
-        <li class="nav-item">
-          <a [routerLink]="'/dashboard'" 
-             routerLinkActive="active"  
-             [routerLinkActiveOptions]="{ exact: true }"
-             class="nav-link text-white">
-            الصفحة الرئيسية <i class="fas fa-home me-2"></i> 
-          </a>
-        </li>
+      
       </ul>
     </div>
 
