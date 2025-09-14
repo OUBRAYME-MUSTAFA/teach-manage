@@ -295,40 +295,97 @@ getPercentageAboveOrEqualTen(cls: string, columnName: string , donnes : any[]): 
   }
 
   // 📥 تحميل PDF
-  async downloadPDF() {
+async downloadPDF() {
   const element = document.getElementById('contentToExport');
-  if (element) {
-    const html2pdf = (await import('html2pdf.js')).default;
+  if (!element) return;
 
-    const options = {
-      margin:       0.5,
-      filename:     'statistics.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
+  // High resolution capture
+  const canvas = await html2canvas(element, {
+    scale: 3,   // sharp
+    useCORS: true
+  });
 
-    html2pdf().set(options).from(element).save();
+  const imgData = canvas.toDataURL('image/png', 1.0); // max quality
+  const pdf = new jsPDF('p', 'mm', 'a4');
+
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
+
+  // Set margins
+  const margin = 10; // mm
+  const availableWidth = pdfWidth - margin * 2;
+  const availableHeight = pdfHeight - margin * 2;
+
+  // Scale image to fit inside margins
+  const imgWidth = availableWidth;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = margin;
+
+  // First page
+  pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+  heightLeft -= availableHeight;
+
+  // Extra pages if needed
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight + margin;
+    pdf.addPage();
+    pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+    heightLeft -= availableHeight;
   }
+
+  pdf.save('statistics.pdf');
 }
+
+
   
- async downloadPDF2() {
-    const element = document.getElementById('contentToExport');
-    if (!element) return;
+async downloadPDF2() {
+  const element = document.getElementById('contentToExport');
+  if (!element) return;
 
-    // التقط العنصر كصورة مع تقليل الحجم
-    const canvas = await html2canvas(element, { scale: 0.7 });
-    const imgData = canvas.toDataURL('image/png');
+  // High resolution capture (sharper + correct sizing)
+  const canvas = await html2canvas(element, {
+    scale: 4,                  // sharper than 3
+    useCORS: true,
+    logging: false,
+    windowWidth: element.scrollWidth,   // actual element width
+    windowHeight: element.scrollHeight  // actual element height
+  });
 
-    // إعداد PDF بحجم A4
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+  const imgData = canvas.toDataURL('image/png', 1.0); // max quality
+  const pdf = new jsPDF('p', 'mm', 'a4');
 
-    // إضافة الصورة لتملأ صفحة واحدة
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('statistics.pdf');
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
+
+  // Set margins
+  const margin = 10; // mm
+  const availableWidth = pdfWidth - margin * 2;
+  const availableHeight = pdfHeight - margin * 2;
+
+  // Scale image to fit inside margins
+  const imgWidth = availableWidth;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = margin;
+
+  // First page
+  pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+  heightLeft -= availableHeight;
+
+  // Extra pages if needed
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight + margin;
+    pdf.addPage();
+    pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+    heightLeft -= availableHeight;
   }
+
+  pdf.save('statistics.pdf');
+}
+
 
 
   downloadPDF3() {
@@ -710,10 +767,10 @@ y += 10;
   let finalY = (doc as any).lastAutoTable.finalY + 8;
 
    finalY += 3;
-  doc.text("📍: نسبة التلاميذ الحاصلون على المعدل ", rightX-15, finalY, { align: 'center' });
+  doc.text("📍: نسبة التلاميذ الحاصلين على المعدل ", rightX-15, finalY, { align: 'center' });
   finalY += 5;
 
-  const percentHead = [['الصف', ...this.getSelectedColumns()].reverse()];
+  const percentHead = [['القسم', ...this.getSelectedColumns()].reverse()];
   const percentBody = this.getFilteredExcelFiles().map(file => {
     const row: any[] = [file.className || 'بدون قسم'];
     this.getSelectedColumns().forEach(col => {
@@ -755,6 +812,142 @@ arrayBufferToBase64(buffer: ArrayBuffer) {
 }
 
 
+async downloadPDF7() {
+  const doc = new jsPDF('p', 'mm', 'a4');
+
+  // Load Arabic font
+  const fontUrl = `${document.baseURI}Amiri-Bold3.ttf`; 
+  const fontArrayBuffer = await fetch(fontUrl).then(res => res.arrayBuffer());
+  const fontBase64 = this.arrayBufferToBase64(fontArrayBuffer);
+  doc.addFileToVFS('Amiri-Bold3.ttf', fontBase64);
+  doc.addFont('Amiri-Bold3.ttf', 'Amiri', 'bold');
+  doc.setFont('Amiri', 'bold');
+  doc.setFontSize(14);
+
+  const pageWidth = doc.internal.pageSize.getWidth();
+
+  // ===== Title =====
+  doc.text('📊 تقرير الإحصائيات', pageWidth / 2, 15, { align: 'center' });
+
+ // ===== File Info Section =====
+let y = 20;
+doc.setFontSize(12);
+
+// Header bar
+doc.setFillColor(41, 128, 185);
+doc.setTextColor(255, 255, 255);
+doc.rect(10, y, pageWidth - 20, 8, 'F');
+doc.text('📋 معلومات الملف', pageWidth / 2, y + 6, { align: 'center' });
+
+y += 12;
+doc.setTextColor(0, 0, 0);
+doc.setFontSize(10);
+
+const metadata = this.excelFiles[0]?.metadata || {};
+
+// Column positions
+const rightX = pageWidth - 15;   // right margin
+const leftX  = pageWidth / 2;    // middle for left column
+
+// Row 1
+doc.text(`🧑‍🏫 الأستاذ: ${metadata.teacher || '-'}`, rightX, y, { align: 'right' });
+doc.text(`📘 المادة: ${metadata.subject || '-'}`, leftX, y, { align: 'right' });
+
+y += 6;
+
+// Row 2
+doc.text(`🏫 المؤسسة: ${metadata.school || '-'}`, rightX, y, { align: 'right' });
+doc.text(`🏢 الأكاديمية: ${metadata.academy || '-'}`, leftX, y, { align: 'right' });
+
+y += 6;
+
+// Row 3
+doc.text(`📍 م.الإقليمية: ${metadata.region || '-'}`, rightX, y, { align: 'right' });
+doc.text(`📅 الدورة: ${metadata.semester || '-'}`, leftX, y, { align: 'right' });
+
+y += 6;
+
+// Row 4
+doc.text(`🗓️ السنة الدراسية: ${metadata.year || '-'}`, rightX, y, { align: 'right' });
+
+// leave some space
+y += 5;
+
+
+  // ===== Min/Max Scores Table =====
+  const mainHeader: any[] = [{ content: 'القسم', rowSpan: 2 }];
+  const subHeader: any[] = [''];
+
+  this.getSelectedColumns().forEach(col => {
+    mainHeader.push({ content: col, colSpan: 2, styles: { halign: 'center' } });
+    subHeader.push('أعلى نقطة', 'أدنى نقطة');
+  });
+
+  const body = this.getFilteredExcelFiles().map(file => {
+    const row: any[] = [file.className || 'بدون قسم'];
+    this.getSelectedColumns().forEach(col => {
+      row.push(this.getMax(file.data, col));
+      row.push(this.getMin(file.data, col));
+    });
+    return row;
+  });
+
+  autoTable(doc, {
+    head: [mainHeader.reverse(), subHeader.reverse()],
+    body: body.map(r => r.reverse()),
+    startY: y, // ✅ start after metadata
+    styles: {
+      halign: 'center',
+      valign: 'middle',
+      font: 'Amiri',
+      fontSize: 9,
+      lineWidth:0.1
+    },
+    headStyles: {
+      fillColor: [41, 128, 185],
+      textColor: 255,
+      fontStyle: 'bold'
+    },
+    alternateRowStyles: { fillColor: [245, 245, 245] },
+    margin: { right: 10, left: 10 }
+  });
+
+  // ===== Percentage Table =====
+  let finalY = (doc as any).lastAutoTable.finalY + 2;
+
+   finalY += 3;
+  doc.text("📍: نسبة التلاميذ الحاصلين على المعدل ", rightX-15, finalY, { align: 'center' });
+  finalY += 3;
+
+  const percentHead = [['القسم', ...this.getSelectedColumns()].reverse()];
+  const percentBody = this.getFilteredExcelFiles().map(file => {
+    const row: any[] = [file.className || 'بدون قسم'];
+    this.getSelectedColumns().forEach(col => {
+      row.push(this.getPercentageAboveOrEqualTen(file.className, col, file.data));
+    });
+    return row.reverse();
+  });
+
+  autoTable(doc, {
+    head: percentHead,
+    body: percentBody,
+    startY: finalY,
+    styles: { halign: 'center', font: 'Amiri', fontSize: 9 },
+    headStyles: { fillColor: [22, 160, 133], textColor: 255 },
+    alternateRowStyles: { fillColor: [245, 245, 245] },
+    margin: { right: 10, left: 10 }
+  });
+
+  // ===== Chart as Image =====
+  const chartCanvas = document.querySelector('canvas') as HTMLCanvasElement;
+  if (chartCanvas) {
+    const chartImg = chartCanvas.toDataURL('image/png', 1.0);
+    finalY = (doc as any).lastAutoTable.finalY + 0.5;
+    doc.addImage(chartImg, 'PNG', 20, finalY, 170, 80);
+  }
+
+  doc.save('statistics.pdf');
+}
 
 
 }
