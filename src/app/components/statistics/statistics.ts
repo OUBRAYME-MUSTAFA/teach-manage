@@ -466,11 +466,11 @@ downloadPDF4() {
 //                       const doc = new jsPDF('p', 'mm', 'a4');
 
 //                       // 1️⃣ Load Arabic font
-//                       const fontUrl = '/Amiri-Bold.ttf';
+//                       const fontUrl = '/Amiri-Bold3.ttf';
 //                       const fontArrayBuffer = await fetch(fontUrl).then(res => res.arrayBuffer());
 //                       const fontBase64 = this.arrayBufferToBase64(fontArrayBuffer);
-//                       doc.addFileToVFS('Amiri-Bold.ttf', fontBase64);
-//                       doc.addFont('Amiri-Bold.ttf', 'Amiri', 'bold');
+//                       doc.addFileToVFS('Amiri-Bold3.ttf', fontBase64);
+//                       doc.addFont('Amiri-Bold3.ttf', 'Amiri', 'bold');
 //                       doc.setFont('Amiri', 'bold');
 //                       doc.setFontSize(14);
 
@@ -610,11 +610,11 @@ async downloadPDF6() {
   const doc = new jsPDF('p', 'mm', 'a4');
 
   // Load Arabic font
-  const fontUrl = '/Amiri-Bold.ttf';
+  const fontUrl = '/Amiri-Bold3.ttf';
   const fontArrayBuffer = await fetch(fontUrl).then(res => res.arrayBuffer());
   const fontBase64 = this.arrayBufferToBase64(fontArrayBuffer);
-  doc.addFileToVFS('Amiri-Bold.ttf', fontBase64);
-  doc.addFont('Amiri-Bold.ttf', 'Amiri', 'bold');
+  doc.addFileToVFS('Amiri-Bold3.ttf', fontBase64);
+  doc.addFont('Amiri-Bold3.ttf', 'Amiri', 'bold');
   doc.setFont('Amiri', 'bold');
   doc.setFontSize(14);
 
