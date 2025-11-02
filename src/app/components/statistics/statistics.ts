@@ -52,7 +52,7 @@ export class StatisticsComponent implements OnInit {
     responsive: true,
     plugins: {
       legend: { position: 'top' },
-      title: { display: true, text: 'نسبة التلاميذ الحاصلون على المعدل ' }
+      title: { display: true, text: 'نسبة التلاميذ الحاصلين على المعدل ' }
     }
   };
   public barChartLabels: string[] = []; // columns
