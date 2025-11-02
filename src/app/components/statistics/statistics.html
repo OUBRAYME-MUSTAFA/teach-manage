@@ -1,5 +1,30 @@
 <div dir="rtl">
      <!-- ✅ Shared Metadata Block (excluding class name) -->
+
+     <!-- ✅ Add Section Button -->
+<div *ngIf="excelFiles.length > 0" class="mb-3 text-center">
+  <button class="btn btn-success" (click)="openUploadModal()">+ إضافة قسم جديد</button>
+</div>
+<!-- ✅ Upload Modal -->
+<div class="modal fade show d-block" *ngIf="showUpload" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">📂 إضافة قسم جديد</h5>
+        <button type="button" class="btn-close" (click)="closeUploadModal()"></button>
+      </div>
+      <div class="modal-body">
+        <app-ExcelUploadComponent
+          (dataParsed)="handleAddMoreFiles($event); closeUploadModal()">
+        </app-ExcelUploadComponent>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeUploadModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="contentToExport" dir="rtl">
 
 
@@ -79,6 +104,7 @@
 
 
                 <h4 class="text-center fw-bold mt-4">🧮 توزيع التلاميذ حسب الدرجات</h4>
+                <div class="table-responsive" style="overflow-x: auto;">
                 <table border="1" class="table table-striped text-center">
                   <thead>
                     <tr>
@@ -104,6 +130,7 @@
                     </tr>
                   </tbody>
                 </table>
+                </div>
                 <h4 class="text-center fw-bold mt-4">📈 نسبة التلاميذ الحاصلون على المعدل  </h4>
 
                 <table border="1" class="table table-striped text-center">

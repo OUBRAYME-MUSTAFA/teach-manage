@@ -8,6 +8,7 @@ import { ChartOptions, ChartData, ChartType } from 'chart.js';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import autoTable from 'jspdf-autotable';
+import { ExcelUploadComponent } from '../upload /upload';
 
 // import { AmiriRegular } from 'src/assets/fonts/Amiri-Regular-base64';
 
@@ -18,7 +19,7 @@ import autoTable from 'jspdf-autotable';
     standalone: true,
     selector: 'app-statistics',
     templateUrl: './statistics.html',
-    imports: [CommonModule, FormsModule, Dashboard, NgChartsModule],
+    imports: [CommonModule, ExcelUploadComponent, FormsModule, Dashboard, NgChartsModule],
     styleUrls :[ './statistics.scss'],
 })
 // src/app/statistics/statistics.component.ts
@@ -949,6 +950,96 @@ y += 5;
   doc.save('statistics.pdf');
 }
 
+showUpload = false;
 
+  openUploadModal() {
+    this.showUpload = true;
+    document.body.classList.add('modal-open');
+  }
+
+  closeUploadModal() {
+    this.showUpload = false;
+    document.body.classList.remove('modal-open');
+  }
+  handleAddMoreFiles(newFiles: any[][]) {
+  const metadataKeys: Record<string, string> = {
+    'القسم': 'class',
+    'المادة': 'subject',
+    'الاستاذ': 'teacher',
+    'السنة': 'year',
+    'المستوى': 'level',
+    'مؤسسة': 'school',
+    'الإقليمية': 'region',
+    'أكاديمية': 'academy',
+    'الدورة  :': 'semester'
+  };
+
+  const mappedFiles = newFiles.map(fileRows => {
+    const labels: Record<string, string> = {};
+    const headerRow = fileRows[9];
+    if (headerRow) {
+      if (headerRow['C']) labels['C'] = headerRow['C'];
+      if (headerRow['D']) labels['D'] = headerRow['D'];
+      if (headerRow['F']) labels['F'] = headerRow['F'];
+      if (headerRow['G']) labels['G'] = headerRow['G'];
+      if (headerRow['I']) labels['I'] = headerRow['I'];
+      if (headerRow['K']) labels['K'] = headerRow['K'];
+      if (headerRow['M']) labels['M'] = headerRow['M'];
+    }
+
+    const metadata = extractMetadata(fileRows);
+
+    const cleanedData = fileRows
+      .slice(10)
+      .filter(row => typeof row === 'object' && row['B'])
+      .map(row => {
+        const cleanedRow: any = {};
+        for (const colKey in labels) {
+          cleanedRow[labels[colKey]] = row[colKey];
+        }
+        return cleanedRow;
+      });
+
+    return {
+      className: metadata['class'] || 'غير معروف',
+      metadata,
+      labels,
+      data: cleanedData
+    };
+  });
+
+  // ✅ Append instead of overwrite
+  this.excelFiles = [...this.excelFiles, ...mappedFiles];
+
+  this.sharedService.setExcelData(this.excelFiles);
+
+  function extractMetadata(rows: any[]): Record<string, string> {
+    const metadata: Record<string, string> = {};
+
+    for (const row of rows) {
+      const entries = Object.entries(row);
+      for (let i = 0; i < entries.length; i++) {
+        const [_, value] = entries[i];
+        if (typeof value === 'string') {
+          for (const arabicKey in metadataKeys) {
+            if (value.includes(arabicKey)) {
+              const nextEntry = entries[i + 1];
+              if (nextEntry && typeof nextEntry[1] === 'string') {
+                const extractedValue = nextEntry[1].trim();
+                if (extractedValue &&
+                    !extractedValue.includes('الاستاذ') &&
+                    !extractedValue.includes('المادة')) {
+                  metadata[metadataKeys[arabicKey]] = extractedValue;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return metadata;
+  }
+}
 }
 

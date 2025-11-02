@@ -5,17 +5,43 @@
     *ngIf="excelFiles.length === 0"
     (dataParsed)="handleMultipleFiles($event)">
   </app-ExcelUploadComponent>
-
-  <!-- Button to add more classes/files, only shown if already have files -->
+<!-- 
   <div *ngIf="excelFiles.length > 0" class="mb-3">
     <button class="btn btn-success" (click)="showUpload = true">+ إضافة قسم جديد</button>
   </div>
 
-  <!-- Conditional upload component when adding more files -->
+
   <app-ExcelUploadComponent
     *ngIf="showUpload"
     (dataParsed)="handleAddMoreFiles($event); showUpload = false">
-  </app-ExcelUploadComponent>
+  </app-ExcelUploadComponent> -->
+  
+<!-- ✅ Button to add more classes/files -->
+<div *ngIf="excelFiles.length > 0" class="mb-3 text-center">
+  <button class="btn btn-success" (click)="openUploadModal()">+ إضافة قسم جديد</button>
+</div>
+
+<!-- ✅ Modal overlay -->
+<div class="modal fade show d-block" *ngIf="showUpload" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">📂 إضافة قسم جديد</h5>
+        <!-- <button type="button" class="btn-close" (click)="closeUploadModal()"></button> -->
+      </div>
+      <div class="modal-body">
+        <!-- Upload component inside the modal -->
+        <app-ExcelUploadComponent
+          (dataParsed)="handleAddMoreFiles($event); closeUploadModal()">
+        </app-ExcelUploadComponent>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeUploadModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <p *ngIf="data.length === 0 && excelFiles.length === 0" class="center-text">No data yet. Upload an Excel file above.</p> 
 

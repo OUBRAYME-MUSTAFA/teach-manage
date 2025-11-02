@@ -238,7 +238,16 @@ handleAddMoreFiles(newFiles: any[][]) {
 
   }
 
-  
+  openUploadModal() {
+  this.showUpload = true;
+  document.body.classList.add('modal-open');
+}
+
+closeUploadModal() {
+  this.showUpload = false;
+  document.body.classList.remove('modal-open');
+}
+
 
 
   

@@ -56,4 +56,7 @@ Array.from(files as File[]).forEach((file: File, index: number) => {
   });
 }
 
+
+
+
 }
