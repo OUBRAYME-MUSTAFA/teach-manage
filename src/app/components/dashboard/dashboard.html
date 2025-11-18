@@ -1,10 +1,20 @@
 <div dir="rtl">
 
   <!-- Show Upload only if no files uploaded yet -->
-  <app-ExcelUploadComponent
-    *ngIf="excelFiles.length === 0"
-    (dataParsed)="handleMultipleFiles($event)">
-  </app-ExcelUploadComponent>
+   <div class="mb-4">  
+            <app-ExcelUploadComponent
+            *ngIf="excelFiles.length === 0"
+            (dataParsed)="handleMultipleFiles($event)">
+
+          </app-ExcelUploadComponent>
+  </div>
+
+<p 
+  *ngIf="data.length === 0 && excelFiles.length === 0" 
+  class="center-text mt-3"
+>
+  لا توجد بيانات بعد. الرجاء رفع ملف Excel أعلاه.
+</p>
 <!-- 
   <div *ngIf="excelFiles.length > 0" class="mb-3">
     <button class="btn btn-success" (click)="showUpload = true">+ إضافة قسم جديد</button>
@@ -43,7 +53,6 @@
 </div>
 
 
-  <p *ngIf="data.length === 0 && excelFiles.length === 0" class="center-text">No data yet. Upload an Excel file above.</p> 
 
 <div *ngIf="excelFiles.length > 0">
   <!-- ✅ Shared Metadata Block (excluding class name) -->
